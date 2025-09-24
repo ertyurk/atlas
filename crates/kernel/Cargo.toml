@@ -1,0 +1,11 @@
+[package]
+name = "atlas-kernel"
+version = "0.1.0"
+edition = "2021"
+description = "Core traits, settings, and module registry for ATLAS"
+
+[dependencies]
+anyhow = { workspace = true }
+config = { workspace = true }
+dotenvy = { workspace = true }
+serde = { workspace = true }

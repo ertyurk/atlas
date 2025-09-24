@@ -1,0 +1,3 @@
+# Local overrides for developer workstations.
+[telemetry]
+otlp_endpoint = "" # keep traces disabled locally by default.

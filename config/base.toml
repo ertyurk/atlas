@@ -1,0 +1,13 @@
+[database]
+endpoint = "ws://127.0.0.1:8000"
+namespace = "atlas"
+database = "core"
+
+[telemetry]
+log_format = "pretty"
+prometheus_bind = "127.0.0.1:9000"
+# otlp_endpoint intentionally left unset by default.
+
+[auth]
+casbin_model_path = "config/auth/model.conf"
+casbin_policy_path = "config/auth/policy.csv"

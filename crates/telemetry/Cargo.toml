@@ -1,0 +1,9 @@
+[package]
+name = "atlas-telemetry"
+version = "0.1.0"
+edition = "2021"
+description = "Logging, tracing, and metrics bootstrap"
+
+[dependencies]
+anyhow = { workspace = true }
+tracing = { workspace = true }

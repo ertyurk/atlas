@@ -13,7 +13,8 @@ This plan sequences the work required to realize the ATLAS core framework descri
 
 ### Phase 0 – Bootstrap & Tooling Readiness
 **Goals**: create the Cargo workspace, shared config scaffolding, and developer tooling.
-- Create `/core/Cargo.toml` workspace, placeholder crates, shared `rust-toolchain.toml` (no nightly).
+- Create `Cargo.toml` workspace at the repo root with framework crates under `/crates`, shared `rust-toolchain.toml` (no nightly).
+- Scaffold the project-specific `/src` tree (entrypoint, `utils/`, `modules/`) to host custom business logic separate from reusable generic core crates.
 - Wire `cargo fmt`, `cargo clippy`, and a basic CI workflow (lint + test matrix).
 - Establish `.env` loading, base `Settings` struct, and configuration file structure, including environment overlays for local, staging, and production (SurrealDB endpoints, telemetry exporters, auth policies).
 - Deliverable: repository builds with `cargo check` across crates; CI green; sample environment configs committed.

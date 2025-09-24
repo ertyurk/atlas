@@ -8,6 +8,7 @@ Workspace Conventions & CLI Rules
 Workspace
 - Use Cargo workspace with resolver = "2". Consider nightly feature flags only if needed with consulting user.
 - Keep crates small and focused (`kernel`, `http`, `db`, `authz`, `telemetry`, `events`, `cli`, `modules/*`).
+- Reserve `/src` for application-specific code (entrypoint, `modules/`, `utils/`), keeping reusable logic inside `crates/` as core generic modules.
 - Feature-gate optional integrations to keep builds fast.
 
 Configuration
@@ -22,4 +23,3 @@ CLI
 Docs & ADRs
 - Keep `docs/project_overview.md` and `docs/development_plan.md` updated when scope changes.
 - Document public traits and module authoring practices in `docs/`.
-

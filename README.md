@@ -10,6 +10,8 @@ This repository contains the early scaffolding for ATLAS, a reusable Rust framew
 
 - Review `docs/development_plan.md` for the phased delivery roadmap and open questions.
 - Follow updates to the acceptance checklist in `docs/project_overview.md` to track progress toward a usable release.
+- Framework crates live under `crates/`; run workspace commands from the repo root (e.g. `cargo test`) to build everything.
+- Project-specific code now resides in `src/` (`utils/`, `modules/`, `main.rs`) so you can iterate on custom features without touching the reusable crates.
 
 
 ## Local SurrealDB (Docker)

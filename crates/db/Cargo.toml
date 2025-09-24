@@ -1,0 +1,9 @@
+[package]
+name = "atlas-db"
+version = "0.1.0"
+edition = "2021"
+description = "SurrealDB client factory and migration tooling"
+
+[dependencies]
+anyhow = { workspace = true }
+tracing = { workspace = true }

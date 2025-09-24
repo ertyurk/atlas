@@ -1,2 +1,4 @@
 /target
+/crates/target
 /.docker
+.env

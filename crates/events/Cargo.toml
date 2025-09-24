@@ -1,0 +1,9 @@
+[package]
+name = "atlas-events"
+version = "0.1.0"
+edition = "2021"
+description = "Event bus primitives"
+
+[dependencies]
+anyhow = { workspace = true }
+tracing = { workspace = true }

@@ -1,0 +1,8 @@
+# Production environment overrides.
+[database]
+endpoint = "wss://surrealdb.prod.example.com:8000"
+
+[telemetry]
+otlp_endpoint = "https://otel-collector.prod.example.com:4317"
+log_format = "json"
+prometheus_bind = "0.0.0.0:9000"

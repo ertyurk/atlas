@@ -7,20 +7,30 @@ Goal: a **generic, modular, AI-ready** Rust framework that we can reuse across S
 ## 1) Repository layout
 
 ```
-/core
-  Cargo.toml                     # workspace
-  /crates
-    /kernel                      # traits, module registry, lifecycle, settings, state
-    /http                        # axum server, middlewares, openapi, error mappers
-    /db                          # surreal client factory, migration runner
-    /authz                       # casbin integration, guards (no concrete user storage)
-    /telemetry                   # logging facade, tracing, otel, metrics
-    /events                      # in-proc event bus, outbox helpers (optional)
-    /cli                         # binary: run server, run migrations, dev tools
+Cargo.toml                     # workspace + atlas-app binary wrapper
+/src                           # project-specific code (non-reusable)
+  main.rs
+  /utils                       # helpers unique to this deployment
+  /modules
+    /books
+      /routes
+      /models.rs
+      /migrations
 
-    /modules                     # example built-ins (purely for samples/tests)
-      /demo-auth                 # demo-only: signup/login for testing
-      /demo-books                # sample CRUD with validation & errors (see §8)
+/crates                        # reusable framework crates
+  /kernel                      # traits, module registry, lifecycle, settings, state
+  /http                        # axum server, middlewares, openapi, error mappers
+  /db                          # surreal client factory, migration runner
+  /authz                       # casbin integration, guards (no concrete user storage)
+  /telemetry                   # logging facade, tracing, otel, metrics
+  /events                      # in-proc event bus, outbox helpers (optional)
+  /cli                         # binary: run server, run migrations, dev tools
+  /modules                     # example built-ins (purely for samples/tests)
+    /demo-auth                 # demo-only: signup/login for testing
+    /demo-books                # sample CRUD with validation & errors (see §8)
+
+/config                        # base + environment overlays, Casbin artifacts
+/docs                          # requirements, plans, module authoring guides
 ```
 
 **Workspace** uses `resolver = "2"` and enables `-Zfeatures=it-just-works` if you prefer nightly (optional).
@@ -426,7 +436,7 @@ pub async fn create_book(
 **Migration example**
 
 ```sql
--- modules/demo-books/migrations/0001_init.surql
+-- crates/modules/demo-books/migrations/0001_init.surql
 DEFINE TABLE book SCHEMAFULL;
 DEFINE FIELD name   ON book TYPE string ASSERT $value != "";
 DEFINE FIELD slug   ON book TYPE string ASSERT $value != "";

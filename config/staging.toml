@@ -1,0 +1,7 @@
+# Staging environment overrides.
+[database]
+endpoint = "ws://surrealdb-staging.internal:8000"
+
+[telemetry]
+otlp_endpoint = "http://otel-collector.staging.svc:4317"
+log_format = "json"

@@ -1,0 +1,9 @@
+[package]
+name = "atlas-module-demo-auth"
+version = "0.1.0"
+edition = "2021"
+description = "Demo authentication module"
+
+[dependencies]
+anyhow = { workspace = true }
+tracing = { workspace = true }
