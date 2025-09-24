@@ -1,0 +1,14 @@
+services:
+  surrealdb:
+    image: surrealdb/surrealdb:latest
+    command: >-
+      start --log info --user ${SURREAL_USER:-root} --pass ${SURREAL_PASS:-root}
+      --bind 0.0.0.0:8000 file:/data/surrealdb
+    environment:
+      SURREAL_USER: ${SURREAL_USER:-root}
+      SURREAL_PASS: ${SURREAL_PASS:-root}
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./.docker/data/surrealdb:/data
+    restart: unless-stopped

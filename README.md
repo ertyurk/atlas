@@ -12,3 +12,14 @@ This repository contains the early scaffolding for ATLAS, a reusable Rust framew
 - Follow updates to the acceptance checklist in `docs/project_overview.md` to track progress toward a usable release.
 
 
+## Local SurrealDB (Docker)
+
+Use `docker-compose.yml` to launch a local SurrealDB instance that mirrors the environments expected by the framework:
+
+```bash
+docker compose up -d
+```
+
+The service exposes the HTTP interface on `http://localhost:8000` with default credentials `root / root`. Override `SURREAL_USER` and `SURREAL_PASS` in your shell or an `.env` file when you need custom credentials.
+
+Contributions are welcome once the core interfaces stabilize; until then, feedback on the design documents is especially helpful.
