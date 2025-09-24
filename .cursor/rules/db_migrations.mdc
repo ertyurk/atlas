@@ -1,0 +1,25 @@
+---
+globs: "**/*.rs"
+alwaysApply: true
+---
+
+Database & Migrations (SurrealDB)
+
+Connection
+- Provide a connection factory supporting WS/HTTP, configurable via typed `Settings`.
+- Health-check connections during startup; fail fast with context.
+
+Migrations
+- Each module can contribute migrations as ordered `{id, up}` pairs or `*.surql` files.
+- Maintain a persistent `_migrations` ledger keyed by `{module, id}` with timestamps.
+- Plan is deterministic; runner is idempotent (skip already applied).
+- Expose CLI commands: `migrate plan` and `migrate up`.
+
+Queries
+- Prefer parameter binding to avoid injection (e.g., `.bind(("slug", value))`).
+- Keep queries small and composable; avoid dynamic string concatenation.
+
+Testing
+- Provide fixtures/harness for running migrations against an ephemeral Surreal instance or a mock.
+- Assert ledger behavior and ordering across multiple modules.
+

@@ -1,0 +1,52 @@
+---
+globs: "*"
+alwaysApply: true
+---
+
+ATLAS Architecture & Delivery Rules
+
+Purpose
+- Align day-to-day implementation with the PRD in `docs/project_overview.md` and the phased plan in `docs/development_plan.md`.
+- Keep the repo buildable at all times and converge on the acceptance checklist.
+
+Workspace Layout (target)
+- Root `Cargo.toml` defines a workspace with crates: `kernel`, `http`, `db`, `authz`, `telemetry`, `events`, `cli`, and sample `modules` (e.g., `demo-books`).
+- Modules are optional at runtime but must compile; prefer feature flags to exclude heavy deps.
+
+Lifecycle (strict order)
+1. Load `Settings` and initialize telemetry (logger → otel → metrics).
+2. Connect SurrealDB (health-check before continuing).
+3. Initialize `EventBus`.
+4. Initialize Casbin enforcer (allow empty rules in dev).
+5. Call `module.init()` for all modules.
+6. Collect and run migrations (stable order, idempotent, ledger `_migrations`).
+7. Call `module.start()` for background tasks.
+8. Build Axum router, mount per-module routes, serve HTTP + `/docs`.
+9. On shutdown: `module.stop()` → flush traces → close DB.
+
+HTTP & Error Contracts
+- Mount all module routes under `/api/{module}`.
+- Expose Swagger UI at `/docs` and merged spec at `/docs/openapi.json`.
+- All errors MUST serialize to `{details[], message, code}` and map to appropriate `StatusCode`.
+
+Telemetry
+- No `println!`. Use the logger facade over `tracing` with pretty|json output.
+- Include trace/span IDs and HTTP fields (route, method, status, latency_ms).
+- Support OTLP traces and Prometheus `/metrics`.
+
+Migrations
+- Each module can contribute migrations as `*.surql` or embedded strings.
+- Maintain persistent ledger table `_migrations` keyed by `{module, id}`.
+- Runner must be idempotent and deterministic.
+
+Modules
+- Define a `Module` trait with lifecycle hooks and optional contributions (routes, openapi, migrations, events).
+- Registration is build-time via `inventory` for deterministic iteration.
+
+Quality Gates
+- Keep CLI entrypoints green (`cargo check`), add tests with features.
+- Add lint/format in CI; forbid `println!` in code review.
+
+Delivery Principle
+- Prefer thin, composable abstractions first; add ergonomics after acceptance items are met.
+

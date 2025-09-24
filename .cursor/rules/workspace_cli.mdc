@@ -1,0 +1,25 @@
+---
+globs: "*"
+alwaysApply: true
+---
+
+Workspace Conventions & CLI Rules
+
+Workspace
+- Use Cargo workspace with resolver = "2". Consider nightly feature flags only if needed with consulting user.
+- Keep crates small and focused (`kernel`, `http`, `db`, `authz`, `telemetry`, `events`, `cli`, `modules/*`).
+- Feature-gate optional integrations to keep builds fast.
+
+Configuration
+- Load `.env` and typed `Settings`. Provide sane defaults for dev.
+- Centralize port, timeouts, and URLs under `Settings`.
+
+CLI
+- Provide subcommands: `server`, `migrate plan`, `migrate up` (and optional `enforcer check`) and migration file generator for the named module.
+- `server` performs lifecycle: telemetry → db → events → enforcer → modules.init → migrate → modules.start → http.
+- Respect `--config` path and environment overrides.
+
+Docs & ADRs
+- Keep `docs/project_overview.md` and `docs/development_plan.md` updated when scope changes.
+- Document public traits and module authoring practices in `docs/`.
+

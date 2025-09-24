@@ -1,0 +1,25 @@
+---
+globs: "**/*.rs"
+alwaysApply: true
+---
+
+Modules, AuthZ, and Events Rules
+
+Module System
+- Implement `Module` trait with hooks: `init`, `routes`, `openapi`, `migrations`, `start`, `stop`.
+- Register modules via `inventory` for deterministic bootstrap order.
+- Per-module routers mount under `/api/{module}`; prefer scoped middlewares when needed.
+
+Auth Hooks (minimal core)
+- Provide a `TokenDecoder` trait and `CurrentIdentity` extractor; no user storage in core.
+- Integrate Casbin for RBAC; expose a guard middleware. Allow empty rules in dev.
+- Map auth failures to standard error shape with `code` values (e.g., `unauthorized`).
+
+Events
+- Provide in-proc `EventBus` using `broadcast` + `mpsc` with a `DomainEvent` enum.
+- Publish in handlers/services; subscribe in `start()` tasks. Ensure clean shutdown.
+- Optional outbox interface for durable publication; leave storage pluggable.
+
+Samples
+- Provide demo modules (`demo-books`, `demo-auth`) that exercise routes, migrations, logging, events, and docs.
+

@@ -1,0 +1,52 @@
+---
+globs: "**/*.rs"
+alwaysApply: true
+---
+
+Rust Style & Conventions (ATLAS)
+
+Naming
+- Functions/methods: snake_case verbs (e.g., `build_router`, `run_migrations`).
+- Types/structs/enums/traits: PascalCase (e.g., `AppState`, `DomainEvent`, `Module`).
+- Variables: descriptive snake_case (avoid 1–2 char names; prefer full words).
+- Constants: SCREAMING_SNAKE_CASE.
+
+Control Flow
+- Prefer early returns (guard clauses) to reduce nesting.
+- Handle errors and edge cases first.
+- Avoid deep nesting (>2–3 levels). Extract helpers instead.
+- Do not overuse `unwrap`/`expect` in non-test code. Propagate with `?` and map to domain errors.
+
+Error Handling
+- Use `anyhow` for application-level glue, `thiserror` for domain enums (e.g., `AppError`).
+- All HTTP-facing errors must implement `IntoResponse` and produce `{details[], message, code}`.
+- When converting lower-level errors, add context with `anyhow::Context`.
+
+Async
+- Use `tokio` runtime; mark async APIs with `async fn` and `#[async_trait]` for traits.
+- Prefer structured concurrency; cancel child tasks on shutdown.
+- Use timeouts and backoff for IO; avoid blocking in async contexts.
+
+Comments & Docs
+- Keep comments concise and non-obvious; explain the “why,” not the “how.”
+- Use Rustdoc for public APIs and crate-level modules.
+- Avoid TODOs—implement or create an issue.
+
+Formatting & Lint
+- Enforce `cargo fmt` and `cargo clippy -D warnings`.
+- Wrap long lines for readability; avoid long method chains on one line.
+- Match existing file indentation and style; don’t reformat unrelated code.
+
+APIs & Types
+- Explicitly annotate public functions and exported types.
+- Prefer small, focused functions. Extract domain types for clarity (newtypes where helpful).
+- Avoid `any`-like erasure; use enums/structs for structured data.
+
+Logging
+- No `println!`. Use the logger facade; include context fields.
+- Avoid logging secrets; use redaction when necessary.
+
+Testing
+- Use `#[tokio::test]` for async. Favor deterministic tests (no sleeps—use time controls/mocks).
+- Test error mapping and success cases; ensure OpenAPI derivations compile.
+

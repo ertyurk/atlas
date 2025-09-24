@@ -1,0 +1,27 @@
+---
+globs: "**/*.rs"
+alwaysApply: true
+---
+
+HTTP, Error Model, and OpenAPI Rules
+
+HTTP Surface
+- Use Axum. Build a global router and mount module routers under `/api/{module}`.
+- Apply global middlewares: request ID, trace, CORS, compression, timeout.
+- Provide `/healthz` for liveness and `/docs` for Swagger UI; serve spec at `/docs/openapi.json`.
+
+Error Model (mandatory)
+- All errors exposed to HTTP clients MUST serialize to the shape:
+  - `{"details": [], "message": "string", "code": "string"}`
+- Implement a single `AppError` enum with `IntoResponse` that maps variants to `StatusCode` and this body.
+- Internal errors hide details; include a stable `code` and generic message.
+
+OpenAPI
+- Each module may return `utoipa::OpenApi`. Core merges all fragments.
+- Derive schemas for request/response DTOs with `utoipa::ToSchema`.
+- Annotate handlers with `#[utoipa::path(...)]` and document error responses referencing the shared `ErrorBody`.
+
+Consistency
+- Ensure route templates in tracing spans match OpenAPI paths.
+- Prefer typed extractors and DTOs over raw `serde_json::Value`.
+

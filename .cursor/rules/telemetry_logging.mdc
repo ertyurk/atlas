@@ -1,0 +1,25 @@
+---
+globs: "**/*.rs"
+alwaysApply: true
+---
+
+Telemetry & Logging Rules
+
+Logger Facade
+- Do not use `println!`. Use the `telemetry::Logger` facade built on `tracing`.
+- Support output format: `pretty` | `json` via settings.
+- Include span context: `trace_id`, `span_id`, `module`, `route`, `method`, `status`, `latency_ms`.
+
+Tracing & OTLP
+- Initialize `tracing-subscriber` with `EnvFilter` and fmt layer.
+- If enabled, export traces via `tracing-opentelemetry` to OTLP endpoint from settings.
+
+Metrics
+- Expose Prometheus `/metrics` when enabled; record HTTP latencies and counts.
+- Prefer `metrics` crate macros with clear, stable names.
+
+Usage Guidance
+- Use structured fields rather than interpolated strings where possible.
+- Avoid logging secrets/PPI; redact or omit sensitive fields.
+- Ensure all HTTP handlers are instrumented to capture latency and status.
+

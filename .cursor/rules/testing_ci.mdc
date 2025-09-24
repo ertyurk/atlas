@@ -1,0 +1,22 @@
+---
+globs: "*"
+alwaysApply: true
+---
+
+Testing & CI Rules
+
+Testing
+- Maintain unit and integration tests per crate; add contract tests for public traits.
+- For async tests, use `#[tokio::test]` and virtual time where applicable.
+- Provide integration tests validating module lifecycle sequencing and HTTP error mapping.
+- Migration tests: verify ledger `_migrations` behavior with ephemeral Surreal.
+
+CI
+- Lint and format: `cargo fmt -- --check` and `cargo clippy -D warnings`.
+- Build and test matrix across crates; cache dependencies.
+- Add `cargo audit` and optional SurrealDB service for migration tests by Phase 3.
+
+Quality Gates
+- Keep workspace buildable (`cargo check`) at the end of every PR.
+- Forbid `println!` in review; require logger usage.
+

@@ -1,0 +1,28 @@
+---
+globs: "*"
+alwaysApply: true
+---
+
+Assistant & Prompting Rules (for this repo)
+
+Scope
+- Prioritize aligning outputs with `docs/project_overview.md` and `docs/development_plan.md`.
+- When generating code, prefer small, testable increments that keep `cargo check` green.
+
+Style
+- Communicate concisely with high-signal summaries.
+- Use code blocks only for new/proposed code; use code references when citing existing files.
+
+Implementation
+- Avoid speculative features; follow acceptance checklist. Prefer thin abstractions first.
+- Keep logger usage consistent; forbid `println!` in examples.
+- Ensure errors conform to `{details[], message, code}` in demos and snippets.
+
+Tasks
+- Break work into atomic todos; keep only one item in progress.
+- After each edit, check lints for the touched files and fix simple issues.
+
+Security & Privacy
+- Do not include secrets or tokens in examples.
+- Redact sensitive fields in logs.
+
