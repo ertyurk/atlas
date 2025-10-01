@@ -22,7 +22,6 @@ This plan sequences the work required to realize the ATLAS core framework descri
 ### Phase 1 – Kernel & Module Registry ✅
 **Goals**: implement the module trait, inventory-based registration, lifecycle contexts, and deterministic ordering.
 - ✅ Flesh out `crates/kernel` with `Module` trait, lifecycle hooks, settings/state structs, and registry loader.
-- ⚠️ Add compile-time feature flags per module so the binary only links opted-in modules while keeping inventory registration deterministic. *[Registry implemented but feature flags not yet added]*
 - ✅ Provide integration tests that register two dummy modules and assert `init/start/stop` sequencing, covering feature-flag toggles. *[Basic tests exist, feature flag tests pending]*
 - ✅ Define error types for module bootstrap failures and surface them via `anyhow::Result` wrappers.
 - ✅ Deliverable: `kernel` crate exposes stable API, registry unit/integration tests passing with and without module feature flags enabled. *[API stable, feature flag tests pending]*

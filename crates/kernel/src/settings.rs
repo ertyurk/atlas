@@ -23,6 +23,8 @@ pub struct Settings {
     #[serde(default)]
     pub environment: Environment,
     #[serde(default)]
+    pub server: ServerSettings,
+    #[serde(default)]
     pub database: DatabaseSettings,
     #[serde(default)]
     pub telemetry: TelemetrySettings,
@@ -77,6 +79,40 @@ impl Settings {
         };
 
         Ok(settings)
+    }
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct ServerSettings {
+    #[serde(default = "ServerSettings::default_host")]
+    pub host: String,
+    #[serde(default = "ServerSettings::default_port")]
+    pub port: u16,
+    #[serde(default = "ServerSettings::default_request_timeout_ms")]
+    pub request_timeout_ms: u64,
+}
+
+impl ServerSettings {
+    fn default_host() -> String {
+        "0.0.0.0".to_string()
+    }
+
+    fn default_port() -> u16 {
+        8080
+    }
+
+    fn default_request_timeout_ms() -> u64 {
+        15000
+    }
+}
+
+impl Default for ServerSettings {
+    fn default() -> Self {
+        Self {
+            host: Self::default_host(),
+            port: Self::default_port(),
+            request_timeout_ms: Self::default_request_timeout_ms(),
+        }
     }
 }
 

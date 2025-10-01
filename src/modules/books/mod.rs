@@ -3,6 +3,7 @@ pub mod models;
 use async_trait::async_trait;
 use atlas_kernel::{InitCtx, Migration, Module};
 use axum::{routing::get, Router};
+use serde_json::json;
 
 /// Books module implementation for testing the ATLAS module lifecycle
 pub struct BooksModule;
@@ -32,6 +33,135 @@ impl Module for BooksModule {
         Router::new()
             .route("/", get(list_books))
             .route("/health", get(health_check))
+            .route("/error-test", get(error_test))
+    }
+
+    fn openapi(&self) -> Option<serde_json::Value> {
+        Some(serde_json::json!({
+            "paths": {
+                "/": {
+                    "get": {
+                        "summary": "List books",
+                        "tags": ["Books"],
+                        "responses": {
+                            "200": {
+                                "description": "List of books",
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Book"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "500": {
+                                "description": "Internal server error",
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "$ref": "#/components/schemas/ErrorResponse"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "/health": {
+                    "get": {
+                        "summary": "Books health check",
+                        "tags": ["Books"],
+                        "responses": {
+                            "200": {
+                                "description": "OK",
+                                "content": {
+                                    "text/plain": {
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "500": {
+                                "description": "Internal server error",
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "$ref": "#/components/schemas/ErrorResponse"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "/error-test": {
+                    "get": {
+                        "summary": "Error test endpoint",
+                        "tags": ["Books"],
+                        "responses": {
+                            "422": {
+                                "description": "Validation error",
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "$ref": "#/components/schemas/ErrorResponse"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "components": {
+                "schemas": {
+                    "Book": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string",
+                                "description": "Unique identifier for the book"
+                            },
+                            "title": {
+                                "type": "string",
+                                "description": "Title of the book"
+                            },
+                            "author": {
+                                "type": "string",
+                                "description": "Author of the book"
+                            },
+                            "slug": {
+                                "type": "string",
+                                "description": "URL-friendly slug for the book"
+                            }
+                        },
+                        "required": ["id", "title", "author", "slug"]
+                    },
+                    "CreateBook": {
+                        "type": "object",
+                        "properties": {
+                            "title": {
+                                "type": "string",
+                                "description": "Title of the book"
+                            },
+                            "author": {
+                                "type": "string",
+                                "description": "Author of the book"
+                            },
+                            "slug": {
+                                "type": "string",
+                                "description": "URL-friendly slug for the book"
+                            }
+                        },
+                        "required": ["title", "author", "slug"]
+                    }
+                }
+            }
+        }))
     }
 
     fn migrations(&self) -> Vec<Migration> {
@@ -81,6 +211,15 @@ async fn list_books() -> axum::Json<Vec<models::Book>> {
     ];
 
     axum::Json(books)
+}
+
+/// Error test endpoint to demonstrate the new error format
+async fn error_test() -> Result<axum::Json<serde_json::Value>, atlas_http::error::AppError> {
+    // Return a validation error to demonstrate the new error format
+    Err(atlas_http::error::AppError::validation(
+        vec![json!({"field": "slug", "error": "required"})],
+        "This is a test validation error to demonstrate the new error format with trace_id and timestamp"
+    ))
 }
 
 /// Create a new instance of the books module

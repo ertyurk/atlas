@@ -13,6 +13,7 @@ Key Principles
 - Adhere to Rust's naming conventions: snake_case for variables and functions, PascalCase for types and structs.
 - Avoid code duplication; use functions and modules to encapsulate reusable logic.
 - Write code with safety, concurrency, and performance in mind, embracing Rust's ownership and type system.
+- Use always `cargo add` to add a new package to the workspace. This helps to have latest packages always unless we require to use an older version, we prefer to use the latest version of the packages.
 
 Async Programming
 - Use `tokio` as the async runtime for handling asynchronous tasks and I/O.

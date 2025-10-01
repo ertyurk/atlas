@@ -3,14 +3,14 @@ use std::sync::Arc;
 
 use crate::module::{InitCtx, Module};
 
-/// Core module initialization order
+/// Core module initialization order (excluding HTTP server)
 const CORE_MODULE_ORDER: &[&str] = &[
     "kernel",    // Kernel must be first
     "telemetry", // Telemetry for logging
     "db",        // Database connection
     "authz",     // Authorization
     "events",    // Event bus
-    "http",      // HTTP server
+                 // Note: HTTP server is started separately after all modules are initialized
 ];
 
 /// Module registry for managing module lifecycle with core/custom separation

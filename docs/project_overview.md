@@ -85,11 +85,20 @@ Cargo.toml                     # workspace + atlas-app binary wrapper
    * Errors must implement `IntoResponse` and emit:
 
      ```json
-     {
-       "details": [ /* arbitrary records */ ],
-       "message": "string",
-       "code": "string"
-     }
+      {
+        "error": {
+          "code": "validation_error",
+          "message": "This is a test validation error to demonstrate the new error format with trace_id and timestamp",
+          "details": [
+            {
+              "field": "slug",
+              "error": "required"
+            }
+          ],
+          "trace_id": "3afaa2bb-d0ea-4c2f-82f3-fb7fd2ec4b33",
+          "timestamp": "2025-10-01 18:53:32.601016 +00:00:00"
+        }
+      }
      ```
    * Logging via `logger.warn(...)`, `logger.info(...)`, etc. (facade over `tracing`).
 

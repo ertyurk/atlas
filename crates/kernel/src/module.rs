@@ -1,6 +1,5 @@
 use async_trait::async_trait;
 use axum::Router;
-use utoipa::openapi::OpenApi;
 
 /// Context provided to modules during initialization
 pub struct InitCtx<'a> {
@@ -35,9 +34,9 @@ pub trait Module: Sync + Send {
         Router::new()
     }
 
-    /// Return OpenAPI specification fragment for this module
+    /// Return OpenAPI specification fragment for this module as JSON
     /// Will be merged with other modules' specs
-    fn openapi(&self) -> Option<OpenApi> {
+    fn openapi(&self) -> Option<serde_json::Value> {
         None
     }
 
