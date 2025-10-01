@@ -1,9 +1,7 @@
 //! HTTP server facade for ATLAS with Axum, error handling, and OpenAPI support.
 
 use anyhow::Context;
-use axum::{extract::Request, http::HeaderValue, routing::get, Router};
-use tower_http::request_id::{MakeRequestId, RequestId};
-use uuid::{Timestamp, Uuid};
+use axum::{routing::get, Router};
 
 use atlas_kernel::ModuleRegistry;
 
@@ -89,19 +87,4 @@ async fn build_router(
 /// Health check endpoint
 async fn health_check() -> &'static str {
     "ok"
-}
-
-/// Request ID generator for tracing
-#[derive(Clone)]
-struct MakeRequestUuid;
-
-impl MakeRequestId for MakeRequestUuid {
-    fn make_request_id<B>(&mut self, _request: &Request<B>) -> Option<RequestId> {
-        let timestamp = Timestamp::now(uuid::NoContext);
-        let request_id = Uuid::new_v7(timestamp)
-            .to_string()
-            .parse::<HeaderValue>()
-            .ok()?;
-        Some(RequestId::new(request_id))
-    }
 }
