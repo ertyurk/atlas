@@ -8,22 +8,17 @@ const ENV_VAR_NAME: &str = "ATLAS_ENV";
 const CONFIG_DIR_ENV: &str = "ATLAS_CONFIG_DIR";
 
 /// Deployment environment the application is running in.
-#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq, Default)]
 #[serde(rename_all = "lowercase")]
 pub enum Environment {
+    #[default]
     Local,
     Staging,
     Production,
 }
 
-impl Default for Environment {
-    fn default() -> Self {
-        Environment::Local
-    }
-}
-
 /// Top-level configuration structure loaded from layered sources.
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Default)]
 pub struct Settings {
     #[serde(default)]
     pub environment: Environment,
@@ -33,17 +28,6 @@ pub struct Settings {
     pub telemetry: TelemetrySettings,
     #[serde(default)]
     pub auth: AuthSettings,
-}
-
-impl Default for Settings {
-    fn default() -> Self {
-        Self {
-            environment: Environment::default(),
-            database: DatabaseSettings::default(),
-            telemetry: TelemetrySettings::default(),
-            auth: AuthSettings::default(),
-        }
-    }
 }
 
 impl Settings {
@@ -150,17 +134,12 @@ impl Default for TelemetrySettings {
     }
 }
 
-#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq, Default)]
 #[serde(rename_all = "lowercase")]
 pub enum LogFormat {
+    #[default]
     Pretty,
     Json,
-}
-
-impl Default for LogFormat {
-    fn default() -> Self {
-        LogFormat::Pretty
-    }
 }
 
 #[derive(Debug, Clone, Deserialize)]

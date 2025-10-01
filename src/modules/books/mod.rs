@@ -1,5 +1,4 @@
 pub mod models;
-pub mod routes;
 
 use async_trait::async_trait;
 use atlas_kernel::{InitCtx, Migration, Module};

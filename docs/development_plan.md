@@ -15,9 +15,9 @@ This plan sequences the work required to realize the ATLAS core framework descri
 **Goals**: create the Cargo workspace, shared config scaffolding, and developer tooling.
 - ✅ Create `Cargo.toml` workspace at the repo root with framework crates under `/crates`, shared `rust-toolchain.toml` (no nightly).
 - ✅ Scaffold the project-specific `/src` tree (entrypoint, `utils/`, `modules/`) to host custom business logic separate from reusable generic core crates.
-- ⚠️ Wire `cargo fmt`, `cargo clippy`, and a basic CI workflow (lint + test matrix). *[Partial - tooling exists but CI not implemented]*
+- ✅ Wire `cargo fmt`, `cargo clippy`, and a basic CI workflow (lint + test matrix). *[Complete - GitHub Actions workflow with format, clippy, test matrix, security audit, and binary builds]*
 - ✅ Establish `.env` loading, base `Settings` struct, and configuration file structure, including environment overlays for local, staging, and production (SurrealDB endpoints, telemetry exporters, auth policies).
-- ✅ Deliverable: repository builds with `cargo check` across crates; CI green; sample environment configs committed. *[Builds successfully, CI pending]*
+- ✅ Deliverable: repository builds with `cargo check` across crates; CI green; sample environment configs committed. *[Complete - all builds pass, CI workflow implemented, configs committed]*
 
 ### Phase 1 – Kernel & Module Registry ✅
 **Goals**: implement the module trait, inventory-based registration, lifecycle contexts, and deterministic ordering.
