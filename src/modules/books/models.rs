@@ -6,4 +6,5 @@ pub struct Book {
     pub id: String,
     pub title: String,
     pub author: String,
+    pub slug: String,
 }
