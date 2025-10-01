@@ -28,7 +28,7 @@ This plan sequences the work required to realize the ATLAS core framework descri
 
 ### Phase 2 – HTTP Surface & Error Model ❌
 **Goals**: stand up the Axum server crate and enforce uniform error responses.
-- ❌ Build `crates/http` with router builder, global middlewares, per-module mount helpers, and OpenAPI aggregation hooks. *[Placeholder only]*
+- ⚠️  Build `crates/http` with router builder, global middlewares, per-module mount helpers, and OpenAPI aggregation hooks. *[Initial starting point.]*
 - ❌ Implement error response mapper returning `{details, message, code}`; add tests covering success, 4xx, 5xx. *[Not implemented]*
 - ❌ Host Swagger UI at `/docs`; validate merging via sample OpenAPI fragments from dummy modules. *[Not implemented]*
 - ❌ Deliverable: CLI can start an HTTP server serving health route; contract tests cover error schema. *[Not implemented]*
